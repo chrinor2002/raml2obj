@@ -25,6 +25,18 @@ raml2obj.parse(source).then(function(ramlObj) {
 });
 ```
 
+## Usage With Options
+```js
+var raml2obj = require('raml2obj');
+
+// source can either be a filename, url, or parsed RAML object.
+// Returns a promise.
+// Options are any parser options that is supported by raml-js-parser-2
+var options = {};
+raml2obj.parseWithOptions(source, options).then(function(ramlObj) {
+  // Do something with the resulting ramlObj :)
+});
+```
 
 ## Contribute
 raml2obj is an open source project and your contribution is very much appreciated.

@@ -140,11 +140,14 @@ function _enhanceRamlObj(ramlObj) {
   return ramlObj;
 }
 
-function _sourceToRamlObj(source) {
+function _sourceToRamlObj(source, options) {
+    return _sourceToRamlObjWithOptions(source, { rejectOnErrors: true });
+}
+function _sourceToRamlObjWithOptions(source, options) {
   if (typeof source === 'string') {
     if (fs.existsSync(source) || source.indexOf('http') === 0) {
       // Parse as file or url
-      return raml.loadApi(source, { rejectOnErrors: true }).then(result => {
+      return raml.loadApi(source, options).then(result => {
         if (result._node._universe._typedVersion === '0.8') {
           throw new Error('_sourceToRamlObj: only RAML 1.0 is supported!');
         }
@@ -184,4 +187,9 @@ function _sourceToRamlObj(source) {
 
 module.exports.parse = function(source) {
   return _sourceToRamlObj(source).then(ramlObj => _enhanceRamlObj(ramlObj));
+};
+module.exports.parseWithOptions = function(source, options) {
+  return _sourceToRamlObjWithOptions(source, options).then(ramlObj =>
+    _enhanceRamlObj(ramlObj)
+  );
 };
